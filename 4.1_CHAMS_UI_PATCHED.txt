@@ -41,7 +41,7 @@ local Palette = {
 		TitleTop = Color3.fromHex("F3F4F8");
 		TitleBottom = Color3.fromHex("557294");
 		TabActive = Color3.fromHex("557294");
-		Accent = Color3.fromHex("CC99FF");
+		Accent = Color3.fromHex("2d3c50");
 		TabInactive = Color3.fromHex("BFC4CC");
 	};
 };
