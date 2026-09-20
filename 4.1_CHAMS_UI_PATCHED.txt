@@ -193,7 +193,7 @@ local Library do
             ["Text"] = FromRGB(200, 200, 200),
             ["Dark Text"] = FromRGB(100, 100, 100),
             ["Element"] = FromRGB(28, 32, 38),
-            ["Accent"] = FromRGB(184, 212, 255)
+            ["Accent"] = FromRGB(72, 86, 97)
         }
     }
 
