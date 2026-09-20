@@ -193,7 +193,7 @@ local Library do
             ["Text"] = FromRGB(200, 200, 200),
             ["Dark Text"] = FromRGB(100, 100, 100),
             ["Element"] = FromRGB(28, 32, 38),
-            ["Accent"] = FromRGB(72, 86, 97)
+            ["Accent"] = FromRGB(184, 212, 255)
         }
     }
 
@@ -3749,6 +3749,92 @@ local Library do
 
             return Slider 
         end
+    Library.Sections.Textbox = function(self, Data)
+    Data = Data or {}
+
+    local Textbox = {
+        Window = self.Window,
+        Page = self.Page,
+        Section = self,
+
+        Name = Data.Name or Data.name or "Textbox",
+        Flag = Data.Flag or Data.flag or Library:NextFlag(),
+        Placeholder = Data.Placeholder or Data.placeholder or "Type here...",
+        Default = Data.Default or Data.default or "",
+        Callback = Data.Callback or Data.callback or function() end,
+
+        Value = ""
+    }
+
+    local Items = {}
+
+    Items["Textbox"] = Instances:Create("Frame", {
+        Parent = Textbox.Section.Items["Content"].Instance,
+        BackgroundTransparency = 1,
+        Size = UDim2New(1, 0, 0, 42),
+        BorderSizePixel = 0
+    })
+
+    Items["Text"] = Instances:Create("TextLabel", {
+        Parent = Items["Textbox"].Instance,
+        BackgroundTransparency = 1,
+        Size = UDim2New(1, 0, 0, 14),
+        FontFace = Library.Font,
+        Text = Textbox.Name,
+        TextSize = 14,
+        TextXAlignment = Enum.TextXAlignment.Left,
+        TextColor3 = FromRGB(100,100,100)
+    })
+
+    Items["Input"] = Instances:Create("TextBox", {
+        Parent = Items["Textbox"].Instance,
+        Position = UDim2New(0,0,0,20),
+        Size = UDim2New(1,0,0,22),
+        ClearTextOnFocus = false,
+        Text = Textbox.Default,
+        PlaceholderText = Textbox.Placeholder,
+        FontFace = Library.Font,
+        TextSize = 14,
+        BorderSizePixel = 0,
+        BackgroundColor3 = FromRGB(28,32,38),
+        TextColor3 = FromRGB(255,255,255),
+        PlaceholderColor3 = FromRGB(140,140,140)
+    })
+
+    Instances:Create("UICorner", {
+        Parent = Items["Input"].Instance,
+        CornerRadius = UDim.new(0,5)
+    })
+
+    function Textbox:Set(Value)
+        Value = tostring(Value)
+
+        Textbox.Value = Value
+        Library.Flags[Textbox.Flag] = Value
+
+        Items["Input"].Instance.Text = Value
+
+        if Textbox.Callback then
+            Library:SafeCall(Textbox.Callback, Value)
+        end
+    end
+
+    function Textbox:Get()
+        return Textbox.Value
+    end
+
+    Items["Input"]:Connect("FocusLost", function()
+        Textbox:Set(Items["Input"].Instance.Text)
+    end)
+
+    Textbox:Set(Textbox.Default)
+
+    Library.SetFlags[Textbox.Flag] = function(Value)
+        Textbox:Set(Value)
+    end
+
+    return Textbox
+end
 
         Library.Sections.Dropdown = function(self, Data)
             Data = Data or { }
